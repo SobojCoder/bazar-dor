@@ -33,7 +33,7 @@ const Banner = () => {
           চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক
           বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
         </p>
-        <button className="btn mt-8 mb-9 border-none rounded-xl bg-[#07883F] text-white shadow-[0_7px_8px_rgba(0,100,45,0.4)] transition-all duration-200 hover:bg-[#067936] active:translate-y-1 active:shadow-[0_2px_3px_rgba(0,100,45,0.3)]">
+        <button className="btn mt-8 mb-9 py-2 px-7 border-none rounded-xl bg-[#07883F] text-white shadow-[0_7px_8px_rgba(0,100,45,0.4)] transition-all duration-200 hover:bg-[#067936] active:translate-y-1 active:shadow-[0_2px_3px_rgba(0,100,45,0.3)]">
           {" "}
           সব পণ্য দেখুন{" "}
         </button>
