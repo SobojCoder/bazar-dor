@@ -1,11 +1,11 @@
 import React from 'react';
-import DescreaseProductCard from '../card/productCard';
 import Link from 'next/link';
 import { IProduct } from '@/Type/product.type';
+import ProductCard from '../card/productCard';
 
 const AllProduct = async() => {
  "use cache";
-  const res = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
+  const res = await fetch("https://api.api-store.workers.dev/api/bazardor/products");
   const Products = await res.json();
 
   return (
@@ -14,9 +14,11 @@ const AllProduct = async() => {
       <p className="text-[#7C837D] mb-4">{`মোট ${Products.length} টি পণ্য দেখানো হচ্ছে`}</p>
       <Link href={`datailProduct/${Products.id}`}>
       <div className="grid grid-cols-3 gap-5">
-        {Products.map((product: IProduct) => (
-          <DescreaseProductCard key={product.id} product={product} />
-        ))}
+        {Products.map((product: IProduct) =>{return  (<div key={product.id}>
+console.log(product);
+          <ProductCard key={product.id} product={product} />
+        </div>
+        )})}
       </div>
       </Link>
     </div>

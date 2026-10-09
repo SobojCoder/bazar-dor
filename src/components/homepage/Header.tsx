@@ -25,6 +25,7 @@ const Header = () => {
   return (
     <div className="bg-[#FAFCFA]">
     <div className="flex justify-between items-center  py-5 container mx-auto">
+      <Link href='/'>
       <div className="flex gap-4 bg-">
         <Image
           src={logo}
@@ -38,6 +39,7 @@ const Header = () => {
           <p className="text-lg text">{date}</p>
         </div>
       </div>
+      </Link>
       <div className="flex items-center gap-4">
         <Link href='#'>সাইন ইন</Link>
         <Link href='#' className="py-2 px-4 bg-[#05893E] text-[#ffffff] rounded-xl">সাইন আপ</Link>

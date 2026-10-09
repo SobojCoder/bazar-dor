@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "@/components/homepage/Header";
 import Navbar from "@/components/homepage/Navbar";
 import Marquee from "@/components/homepage/Marquee";
+import Footer from "@/components/homepage/Footer";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,15 +28,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-[#F0F5F0]">
         <Header />
         <Navbar />
         <Marquee />
         <main className="container mx-auto">
-
-        {children}
-        </main>
-        </body>
+          <Suspense fallback={<h2>Loading......</h2>}>
+          {children}
+          </Suspense>
+          </main>
+        <Footer />
+      </body>
     </html>
   );
 }

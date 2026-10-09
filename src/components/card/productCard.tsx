@@ -1,7 +1,8 @@
 import { IProduct } from '@/Type/product.type';
 import React from 'react';
 
-const DescreaseProductCard = ({product}:{product:IProduct}) => {
+const ProductCard = ({product}:{product:IProduct}) => {
+
     return (
         <div>
             <div
@@ -36,8 +37,9 @@ const DescreaseProductCard = ({product}:{product:IProduct}) => {
                     {product.today} টাকা{" "}
                   </p>{" "}
                 </div>{" "}
-                {
-                    Number(product.change.pct) < 0 ? 
+                
+                {/* {
+                    pct < 0 ? 
                 <span 
                 className='text-red-500 bg-[#F0F5F0] rounded-3xl px-4 py-1'
                 >
@@ -49,11 +51,11 @@ const DescreaseProductCard = ({product}:{product:IProduct}) => {
                   {" "}
                   ▼ {Math.abs(product.change.pct)}%{" "}
                 </span>
-                }
+                } */}
               </div>{" "}
             </div>
         </div>
     );
 };
 
-export default DescreaseProductCard;
+export default ProductCard;

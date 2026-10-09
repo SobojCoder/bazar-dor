@@ -1,10 +1,11 @@
 import { INav } from "@/Type/navItems.type";
+import Link from "next/link";
 import React from "react";
 
 const Navbar = async () => {
   "use cache";
   const res = await fetch(
-    "https://api.abcz.workers.dev/api/bazardor/categories",
+    "https://api.api-store.workers.dev/api/bazardor/categories",
   );
   const data = await res.json();
   console.log(data);
@@ -13,11 +14,13 @@ const Navbar = async () => {
     <div className=" container mx-auto flex gap-8 items-center justify-center ">
       {data.map((item: INav ) => {
         return (
+          <Link href={`/productsDetails/${item.id}`} key={item.id}>
           <div key={item.id} className="flex gap-2">
             {" "}
             <span>{item.icon}</span>
             <p>{item.nameBn}</p>
           </div>
+          </Link>
         );
       })}
     </div>
