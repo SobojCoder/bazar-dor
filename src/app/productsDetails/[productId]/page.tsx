@@ -4,10 +4,9 @@ import React from 'react';
 
 const ProductsDetails = async({params}:{params:{productId:string}}) => {
     const {productId} = await params;
-    const res  = await fetch(`https://api.api-store.workers.dev/api/bazardor/products`)
+    const res  = await fetch(`https://openapi.programming-hero.com/api/bazardor/products`)
     const data = await res.json();
     const products = data.filter((product:IProduct)=> productId === product.category)
-    console.log(products);
     return (
         <div className='mt-8'>
             <div className='flex gap-3 bg-[#FAFCFA] rounded-2xl py-4 px-6'>
