@@ -38,8 +38,8 @@ const ProductCard = ({product}:{product:IProduct}) => {
                   </p>{" "}
                 </div>{" "}
                 
-                {/* {
-                    pct < 0 ? 
+                {
+                    product.change.pct < 0 ? 
                 <span 
                 className='text-red-500 bg-[#F0F5F0] rounded-3xl px-4 py-1'
                 >
@@ -51,7 +51,7 @@ const ProductCard = ({product}:{product:IProduct}) => {
                   {" "}
                   ▼ {Math.abs(product.change.pct)}%{" "}
                 </span>
-                } */}
+                }
               </div>{" "}
             </div>
         </div>

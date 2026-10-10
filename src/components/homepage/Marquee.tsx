@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import MarqueeText from "react-marquee-text";
 import "react-marquee-text/dist/styles.css";
@@ -5,7 +6,7 @@ import "react-marquee-text/dist/styles.css";
 const Marquee = async () => {
   "use cache";
 
-  const res = await fetch("https://api.api-store.workers.dev/api/bazardor/products");
+  const res = await fetch("https://openapi.programming-hero.com/api/bazardor/products");
   const data = await res.json();
 
   // Duplicate the data
@@ -16,8 +17,9 @@ const Marquee = async () => {
       <div className="flex border-b border-[#d2d2d2] bg-[#FAFCFA] whitespace-nowrap">
         {marqueeData.map((element, index) => {
           return (
+            <Link key={`${element.id}-${index}`} href={`/itemDetails/${element.id}`}>
             <div
-              key={`${element.id}-${index}`}
+              
               className="flex justify-center gap-1.5 items-center border-r px-6  py-2 border-[#d2d2d2]"
             >
               <span className="text-xl">{element.categoryIcon}</span>
@@ -40,6 +42,7 @@ const Marquee = async () => {
                 )}
               </div>
             </div>
+              </Link>
           );
         })}
       </div>
