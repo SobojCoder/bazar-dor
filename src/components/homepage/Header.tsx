@@ -3,6 +3,7 @@ import logo from "@/assets/logo-icon.png";
 import Image from "next/image";
 import Link from "next/link";
 import {  useEffect, useState } from "react";
+import UserInfo from "../UserInfo";
 const Header = () => {
  const [date, setDate] = useState("");
 
@@ -40,10 +41,7 @@ const Header = () => {
         </div>
       </div>
       </Link>
-      <div className="flex items-center gap-4">
-        <Link href='#'>সাইন ইন</Link>
-        <Link href='#' className="py-2 px-4 bg-[#05893E] text-[#ffffff] rounded-xl">সাইন আপ</Link>
-      </div>
+      <UserInfo />
     </div>
     </div>
   );

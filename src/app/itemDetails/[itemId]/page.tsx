@@ -45,7 +45,15 @@ const ItemDetails = async ({
 
   return (
     <div>
-      <p className="flex gap-3 items-center mt-5"><Link href='/'>হোম</Link><FaAngleRight /><Link href={`/productsDetails/${item.category}`}>{item.categoryNameBn}</Link><FaAngleRight /><span>{item.nameBn}</span></p>
+      <p className="flex gap-3 items-center mt-5">
+        <Link href="/">হোম</Link>
+        <FaAngleRight />
+        <Link href={`/productsDetails/${item.category}`}>
+          {item.categoryNameBn}
+        </Link>
+        <FaAngleRight />
+        <span>{item.nameBn}</span>
+      </p>
       {/* top section */}
       <div className="flex justify-between gap-4 my-6 items-center bg-white py-6 px-6 rounded-2xl">
         <div className="flex gap-4">
