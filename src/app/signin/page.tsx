@@ -5,48 +5,10 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
-import { FiEyeOff } from "react-icons/fi";
-import { BsEye } from "react-icons/bs";
+import { toast } from "react-toastify";
 
-const fields = [
-  {
-    name: "name",
-    label: "নাম",
-    type: "text",
-    placeholder: "যেমন: রহিম উদ্দিন",
-    autoComplete: "name",
-  },
-  {
-    name: "email",
-    label: "ইমেইল",
-    type: "email",
-    placeholder: "you@example.com",
-    autoComplete: "email",
-  },
-  {
-    name: "password",
-    label: "পাসওয়ার্ড",
-    type: "password",
-    placeholder: "কমপক্ষে ৮ অক্ষর",
-    autoComplete: "new-password",
-  },
-  {
-    name: "confirm",
-    label: "পাসওয়ার্ড নিশ্চিত করুন",
-    type: "password",
-    placeholder: "আবার লিখুন",
-    autoComplete: "new-password",
-  },
-];
-
-export default function SignUpForm() {
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirm: "",
-  });
+export default function SignInForm() {
+  const [values, setValues] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -55,134 +17,126 @@ export default function SignUpForm() {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
     e.preventDefault();
-
-    const formData = new FormData(e.target)
+ const formData = new FormData(e.target)
     const user = Object.fromEntries(formData.entries()) as {name:string, email:string, password:string}
-
-    const {data, error} = await authClient.signUp.email({
+console.log(user);
+    const {data, error} = await authClient.signIn.email({
         ...user,
         callbackURL: "/"
     })
 
     if(data){
+        toast.success("Login successfully")
         console.log(data);
-        redirect('/')
     }
     if(error){
-
+        toast.error(error.message)
         console.log(error);
     }
 
+    
+
+
     setError("");
 
-    if (values.password.length < 8) {
-      return setError("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
+    if (!values.email || !values.password) {
+      return setError("ইমেইল ও পাসওয়ার্ড দুটোই দিন।");
     }
 
     setLoading(true);
     try {
-      // TODO: call your register API here
-      // await fetch("/api/register", { method: "POST", body: JSON.stringify(values) });
+      // TODO: call your sign-in logic here
+      // e.g. await signIn("credentials", { ...values, redirect: false });
     } catch {
-      setError("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+      setError("ইমেইল বা পাসওয়ার্ড ঠিক নয়।");
     } finally {
       setLoading(false);
     }
   };
+const handleGoogleSignIn = async() =>{
+        const data = await authClient.signIn.social({
+    provider: "google",
+  });
+  console.log(data);
+    }
+const handleGithubSignIn = async() =>{
+        const data = await authClient.signIn.social({
+    provider: "github",
+  });
+  console.log(data);
+    }
+
+  const inputClass =
+    "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20";
+
+  const socialClass =
+    "flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50";
 
   return (
     <main className="min-h-screen bg-emerald-50/60 px-4 py-12">
       <div className="mx-auto w-full max-w-md">
         {/* Heading */}
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">
-            অ্যাকাউন্ট তৈরি করুন
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">সাইন ইন</h1>
           <p className="mt-2 text-sm text-gray-500">
-            বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।
+            বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।
           </p>
         </div>
 
         {/* Card */}
         <div className="rounded-3xl border border-gray-200 bg-white/70 p-6 shadow-sm sm:p-8">
-          
-    <div className="flex flex-col items-center justify-center mt-5">
-      <h2 className="text-2xl font-bold text-red-700">সাইন ইন</h2>
-       <form className="space-y-5">
-          {/* Email */}
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-[#26352b]"
-            >
-              ইমেইল
-            </label>
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <div>
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-900">
+                ইমেইল
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={values.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                autoComplete="email"
+                required
+                className={inputClass}
+              />
+            </div>
 
-            <input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              required
-              className="w-full rounded-lg border border-[#dce6de] bg-transparent px-3 py-3 text-sm text-[#26352b] outline-none transition placeholder:text-gray-500 focus:border-[#05893e] focus:ring-2 focus:ring-[#05893e]/10"
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-[#26352b]"
-            >
-              পাসওয়ার্ড
-            </label>
-
-            <div className="relative">
+            <div>
+              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-900">
+                পাসওয়ার্ড
+              </label>
               <input
                 id="password"
+                name="password"
+                type="password"
+                value={values.password}
+                onChange={handleChange}
                 placeholder="কমপক্ষে ৮ অক্ষর"
+                autoComplete="current-password"
                 required
-                className="w-full rounded-lg border border-[#dce6de] bg-transparent px-3 py-3 pr-11 text-sm text-[#26352b] outline-none transition placeholder:text-gray-500 focus:border-[#05893e] focus:ring-2 focus:ring-[#05893e]/10"
+                className={inputClass}
               />
-
-              <button
-                type="button"
-                aria-label="পাসওয়ার্ড দেখুন"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#05893e]"
-              >
-                {/* {showPassword ? (
-                  <FiEyeOff size={19} />
-                ) : (
-                  <BsEye size={19} />
-                )} */}
-              </button>
             </div>
-          </div>
 
-          {/* Forgot Password */}
-          <div className="text-right">
-            <a
-              href="/forgot-password"
-              className="text-sm text-[#05893e] hover:underline"
+            {error && (
+              <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-xl bg-green-700 py-3 text-sm font-semibold text-white shadow-md shadow-green-900/20 transition hover:bg-green-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 disabled:opacity-60"
             >
-              পাসওয়ার্ড ভুলে গেছেন?
-            </a>
-          </div>
-
-          {/* Sign In Button */}
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-[#05893e] px-4 py-3 text-sm font-semibold text-white shadow-[0_4px_0_#046b31] transition hover:bg-[#047833] active:translate-y-0.5 active:shadow-none"
-          >
-            সাইন ইন
-          </button>
-        </form>
-
-      {/* <button onClick={handleGoogleSignIn} className="btn ">Sign In With Google</button>
-      <button onClick={handleGithubSignIn} className="btn ">Sign In With Github</button> */}
-    </div>
+              {loading ? "অপেক্ষা করুন..." : "সাইন ইন"}
+            </button>
+          </form>
 
           {/* Divider */}
-          <div className="my-5 flex items-center gap-3 text-xs text-gray-400">
+          <div className="my-5 flex items-center gap-3 text-xs text-gray-500">
             <span className="h-px flex-1 bg-gray-200" />
             অথবা
             <span className="h-px flex-1 bg-gray-200" />
@@ -190,29 +144,20 @@ export default function SignUpForm() {
 
           {/* Social buttons */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <button
-              type="button"
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
-            >
+            <button onClick={handleGoogleSignIn} type="button" className=" cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50">
               <FcGoogle size={18} />
               Google দিয়ে চালিয়ে যান
             </button>
-            <button
-              type="button"
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
-            >
+            <button onClick={handleGithubSignIn} type="button" className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50">
               <FaGithub size={18} />
               GitHub দিয়ে চালিয়ে যান
             </button>
           </div>
 
           <p className="mt-5 text-center text-sm text-gray-700">
-            অ্যাকাউন্ট আছে?{" "}
-            <Link
-              href="/signin"
-              className="font-medium text-green-700 hover:underline"
-            >
-              সাইন ইন করুন
+            অ্যাকাউন্ট নেই?{" "}
+            <Link href="/signup" className="font-medium text-green-700 hover:underline">
+              সাইন আপ করুন
             </Link>
           </p>
         </div>

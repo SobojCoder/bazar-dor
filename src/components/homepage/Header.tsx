@@ -36,7 +36,7 @@ const Header = () => {
           className="w-14 h-14 bg-[#05893E] p-2 rounded-lg"
         />
         <div>
-          <h2 className="text-2xl font-extrabold">বাজার দর</h2>
+          <h2 className="text-2xl text-black font-extrabold">বাজার দর</h2>
           <p className="text-lg text">{date}</p>
         </div>
       </div>

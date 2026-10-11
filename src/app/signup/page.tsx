@@ -91,6 +91,19 @@ export default function SignUpForm() {
     }
   };
 
+  const handleGoogleSignIn = async() =>{
+          const data = await authClient.signIn.social({
+      provider: "google",
+    });
+    console.log(data);
+      }
+  const handleGithubSignIn = async() =>{
+          const data = await authClient.signIn.social({
+      provider: "github",
+    });
+    console.log(data);
+      }
+
   return (
     <main className="min-h-screen bg-emerald-50/60 px-4 py-12">
       <div className="mx-auto w-full max-w-md">
@@ -157,15 +170,17 @@ export default function SignUpForm() {
           {/* Social buttons */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <button
+            onClick={handleGoogleSignIn}
               type="button"
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >
               <FcGoogle size={18} />
               Google দিয়ে চালিয়ে যান
             </button>
             <button
+            onClick={handleGithubSignIn}
               type="button"
-              className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >
               <FaGithub size={18} />
               GitHub দিয়ে চালিয়ে যান

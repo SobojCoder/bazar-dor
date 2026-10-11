@@ -6,6 +6,7 @@ import Navbar from "@/components/homepage/Navbar";
 import Marquee from "@/components/homepage/Marquee";
 import Footer from "@/components/homepage/Footer";
 import { Suspense } from "react";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-theme= "light"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F0F5F0]">
@@ -38,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </Suspense>
           </main>
         <Footer />
+        <ToastContainer />
       </body>
     </html>
   );
