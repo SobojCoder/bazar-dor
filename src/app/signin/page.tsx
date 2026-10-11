@@ -12,7 +12,7 @@ export default function SignInForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) =>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setValues((v) => ({ ...v, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
@@ -67,24 +67,21 @@ const handleGithubSignIn = async() =>{
     }
 
   const inputClass =
-    "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20";
-
-  const socialClass =
-    "flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50";
+    "w-full rounded-xl border border-gray-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20";
 
   return (
-    <main className="min-h-screen bg-emerald-50/60 px-4 py-12">
+    <main className="min-h-screen bg-emerald-50/60 px-4 py-8 sm:py-12">
       <div className="mx-auto w-full max-w-md">
         {/* Heading */}
-        <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">সাইন ইন</h1>
-          <p className="mt-2 text-sm text-gray-500">
+        <div className="mb-5 sm:mb-6 text-center">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">সাইন ইন</h1>
+          <p className="mt-2 text-xs sm:text-sm text-gray-500">
             বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।
           </p>
         </div>
 
         {/* Card */}
-        <div className="rounded-3xl border border-gray-200 bg-white/70 p-6 shadow-sm sm:p-8">
+        <div className="rounded-3xl border border-gray-200 bg-white/70 p-5 shadow-sm sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-900">
@@ -136,25 +133,25 @@ const handleGithubSignIn = async() =>{
           </form>
 
           {/* Divider */}
-          <div className="my-5 flex items-center gap-3 text-xs text-gray-500">
+          <div className="my-4 sm:my-5 flex items-center gap-3 text-xs text-gray-500">
             <span className="h-px flex-1 bg-gray-200" />
             অথবা
             <span className="h-px flex-1 bg-gray-200" />
           </div>
 
           {/* Social buttons */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <button onClick={handleGoogleSignIn} type="button" className=" cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50">
+          <div className="grid grid-cols-1 gap-3">
+            <button onClick={handleGoogleSignIn} type="button" className=" cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50">
               <FcGoogle size={18} />
               Google দিয়ে চালিয়ে যান
             </button>
-            <button onClick={handleGithubSignIn} type="button" className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50">
+            <button onClick={handleGithubSignIn} type="button" className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50">
               <FaGithub size={18} />
               GitHub দিয়ে চালিয়ে যান
             </button>
           </div>
 
-          <p className="mt-5 text-center text-sm text-gray-700">
+          <p className="mt-4 sm:mt-5 text-center text-sm text-gray-700">
             অ্যাকাউন্ট নেই?{" "}
             <Link href="/signup" className="font-medium text-green-700 hover:underline">
               সাইন আপ করুন
@@ -162,7 +159,7 @@ const handleGithubSignIn = async() =>{
           </p>
         </div>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-5 sm:mt-6 text-center text-sm text-gray-500">
           <Link href="/" className="hover:text-gray-700">
             ← হোম পেজে ফিরে যান
           </Link>

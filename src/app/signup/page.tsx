@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -36,7 +36,7 @@ const fields = [
     placeholder: "আবার লিখুন",
     autoComplete: "new-password",
   },
-];
+] as const;
 
 export default function SignUpForm() {
   const [values, setValues] = useState({
@@ -48,7 +48,7 @@ export default function SignUpForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) =>
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     setValues((v) => ({ ...v, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
@@ -105,20 +105,20 @@ export default function SignUpForm() {
       }
 
   return (
-    <main className="min-h-screen bg-emerald-50/60 px-4 py-12">
+    <main className="min-h-screen bg-emerald-50/60 px-4 py-8 sm:py-12">
       <div className="mx-auto w-full max-w-md">
         {/* Heading */}
-        <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">
+        <div className="mb-5 sm:mb-6 text-center">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             অ্যাকাউন্ট তৈরি করুন
           </h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-xs sm:text-sm text-gray-500">
             বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।
           </p>
         </div>
 
         {/* Card */}
-        <div className="rounded-3xl border border-gray-200 bg-white/70 p-6 shadow-sm sm:p-8">
+        <div className="rounded-3xl border border-gray-200 bg-white/70 p-5 shadow-sm sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {fields.map((f) => (
               <div key={f.name}>
@@ -137,7 +137,7 @@ export default function SignUpForm() {
                   placeholder={f.placeholder}
                   autoComplete={f.autoComplete}
                   required
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                 />
               </div>
             ))}
@@ -161,18 +161,18 @@ export default function SignUpForm() {
           </form>
 
           {/* Divider */}
-          <div className="my-5 flex items-center gap-3 text-xs text-gray-400">
+          <div className="my-4 sm:my-5 flex items-center gap-3 text-xs text-gray-400">
             <span className="h-px flex-1 bg-gray-200" />
             অথবা
             <span className="h-px flex-1 bg-gray-200" />
           </div>
 
           {/* Social buttons */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3">
             <button
             onClick={handleGoogleSignIn}
               type="button"
-              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >
               <FcGoogle size={18} />
               Google দিয়ে চালিয়ে যান
@@ -180,14 +180,14 @@ export default function SignUpForm() {
             <button
             onClick={handleGithubSignIn}
               type="button"
-              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >
               <FaGithub size={18} />
               GitHub দিয়ে চালিয়ে যান
             </button>
           </div>
 
-          <p className="mt-5 text-center text-sm text-gray-700">
+          <p className="mt-4 sm:mt-5 text-center text-sm text-gray-700">
             অ্যাকাউন্ট আছে?{" "}
             <Link
               href="/signin"
@@ -198,7 +198,7 @@ export default function SignUpForm() {
           </p>
         </div>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-5 sm:mt-6 text-center text-sm text-gray-500">
           <Link href="/" className="hover:text-gray-700">
             ← হোম পেজে ফিরে যান
           </Link>

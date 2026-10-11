@@ -19,22 +19,22 @@ const ProductsDetails = async ({
   );
   console.log("category name",products);
   return (
-    <div className="mt-8">
-        <p className="flex gap-3 items-center my-5">
+    <div className="mt-6 sm:mt-8">
+        <p className="flex flex-wrap gap-2 sm:gap-3 items-center my-4 sm:my-5 text-sm sm:text-base">
         <Link href="/">হোম</Link>
         <FaAngleRight />
         
        <span>{products[0]?.categoryNameBn}</span>
       </p>
-      <div className="flex gap-3 bg-[#FAFCFA] rounded-2xl py-4 px-6">
-        <span className="text-4xl">{products[0]?.categoryIcon}</span>
-        <div>
-          <h2 className="text-xl">{products[0]?.categoryNameBn}</h2>
-          <p>{`${products.length}টি পণ্যের আজকের দাম ও পরিবর্তন`}</p>
+      <div className="flex items-center gap-2 sm:gap-3 bg-[#FAFCFA] rounded-2xl py-3 sm:py-4 px-4 sm:px-6">
+        <span className="text-3xl sm:text-4xl shrink-0">{products[0]?.categoryIcon}</span>
+        <div className="min-w-0">
+          <h2 className="text-lg sm:text-xl">{products[0]?.categoryNameBn}</h2>
+          <p className="text-sm sm:text-base">{`${products.length}টি পণ্যের আজকের দাম ও পরিবর্তন`}</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mt-6 sm:mt-8">
         {products.map((product: IProduct, ind: number) => (
             <Link key={ind} href={`/itemDetails/${product.id}`}>
           <ProductCard  product={product} />
