@@ -16,7 +16,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           {" "}
           <div className="flex h-9 w-9 sm:h-11 sm:w-11 lg:h-12 lg:w-12 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-lg sm:text-2xl">
             {" "}
-            {product.categoryIcon}{" "}
+            {product.image}{" "}
           </div>{" "}
           <div className="min-w-0">
             {" "}

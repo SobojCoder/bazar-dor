@@ -27,18 +27,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-theme= "light"
+      data-theme="light"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F0F5F0]">
-        <Header />
-        <Navbar />
+        <div className="sticky top-0 z-50 bg-white shadow-sm">
+          <Header />
+          <Navbar />
+        </div>
         <Marquee />
         <main className="container mx-auto">
-          <Suspense fallback={<h2>Loading......</h2>}>
-          {children}
-          </Suspense>
-          </main>
+          <Suspense fallback={<h2>Loading......</h2>}>{children}</Suspense>
+        </main>
         <Footer />
         <Toaster position="top-center" />
       </body>

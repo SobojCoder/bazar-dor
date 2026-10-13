@@ -25,7 +25,7 @@ const Marquee = async () => {
               className="block shrink-0 transition-colors hover:bg-[#F0F5F0]"
             >
               <div className="flex justify-center gap-1 sm:gap-1.5 items-center border-r px-2.5 sm:px-4 lg:px-6 py-1.5 sm:py-2 border-[#d2d2d2]">
-                <span className="text-base sm:text-lg lg:text-xl">{element.categoryIcon}</span>
+                <span className="text-base sm:text-lg lg:text-xl">{element.image  }</span>
 
                 <p className="text-sm sm:text-base lg:text-lg font-medium text-gray-800">
                   {element.nameBn}
