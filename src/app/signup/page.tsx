@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ChangeEvent } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -36,7 +36,7 @@ const fields = [
     placeholder: "আবার লিখুন",
     autoComplete: "new-password",
   },
-] as const;
+];
 
 export default function SignUpForm() {
   const [values, setValues] = useState({
@@ -48,7 +48,7 @@ export default function SignUpForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+  const handleChange = (e) =>
     setValues((v) => ({ ...v, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
@@ -105,26 +105,26 @@ export default function SignUpForm() {
       }
 
   return (
-    <main className="min-h-screen bg-emerald-50/60 px-4 py-8 sm:py-12">
+    <main className="min-h-screen bg-emerald-50/60 px-3 py-6 sm:px-4 sm:py-10 lg:py-14">
       <div className="mx-auto w-full max-w-md">
         {/* Heading */}
-        <div className="mb-5 sm:mb-6 text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+        <div className="mb-4 sm:mb-6 text-center">
+          <h1 className="text-xl min-[400px]:text-2xl sm:text-3xl font-bold text-gray-900">
             অ্যাকাউন্ট তৈরি করুন
           </h1>
-          <p className="mt-2 text-xs sm:text-sm text-gray-500">
+          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-gray-500">
             বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।
           </p>
         </div>
 
         {/* Card */}
-        <div className="rounded-3xl border border-gray-200 bg-white/70 p-5 shadow-sm sm:p-8">
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <div className="rounded-2xl sm:rounded-3xl border border-gray-200 bg-white/70 p-4 shadow-sm min-[400px]:p-5 sm:p-8">
+          <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4" noValidate>
             {fields.map((f) => (
               <div key={f.name}>
                 <label
                   htmlFor={f.name}
-                  className="mb-1.5 block text-sm font-medium text-gray-900"
+                  className="mb-1 sm:mb-1.5 block text-sm font-medium text-gray-900"
                 >
                   {f.label}
                 </label>
@@ -137,7 +137,7 @@ export default function SignUpForm() {
                   placeholder={f.placeholder}
                   autoComplete={f.autoComplete}
                   required
-                  className="w-full rounded-xl border border-gray-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
+                  className="block w-full min-w-0 rounded-xl border border-gray-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-base sm:text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
                 />
               </div>
             ))}
@@ -145,7 +145,7 @@ export default function SignUpForm() {
             {error && (
               <p
                 role="alert"
-                className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+                className="rounded-lg bg-red-50 px-3 py-2 text-xs sm:text-sm text-red-600"
               >
                 {error}
               </p>
@@ -154,7 +154,7 @@ export default function SignUpForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-green-700 py-3 text-sm font-semibold text-white shadow-md shadow-green-900/20 transition hover:bg-green-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 disabled:opacity-60"
+              className="w-full rounded-xl bg-green-700 py-2.5 sm:py-3 text-sm font-semibold text-white shadow-md shadow-green-900/20 transition hover:bg-green-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 disabled:opacity-60"
             >
               {loading ? "অপেক্ষা করুন..." : "অ্যাকাউন্ট তৈরি করুন"}
             </button>
@@ -168,11 +168,11 @@ export default function SignUpForm() {
           </div>
 
           {/* Social buttons */}
-          <div className="grid grid-cols-1 gap-3">
+          <div className="grid grid-cols-1 gap-2.5 sm:gap-3">
             <button
             onClick={handleGoogleSignIn}
               type="button"
-              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-xs min-[360px]:text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >
               <FcGoogle size={18} />
               Google দিয়ে চালিয়ে যান
@@ -180,14 +180,14 @@ export default function SignUpForm() {
             <button
             onClick={handleGithubSignIn}
               type="button"
-              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+              className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-xs min-[360px]:text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >
               <FaGithub size={18} />
               GitHub দিয়ে চালিয়ে যান
             </button>
           </div>
 
-          <p className="mt-4 sm:mt-5 text-center text-sm text-gray-700">
+          <p className="mt-4 sm:mt-5 text-center text-xs sm:text-sm text-gray-700">
             অ্যাকাউন্ট আছে?{" "}
             <Link
               href="/signin"
@@ -198,7 +198,7 @@ export default function SignUpForm() {
           </p>
         </div>
 
-        <p className="mt-5 sm:mt-6 text-center text-sm text-gray-500">
+        <p className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-gray-500">
           <Link href="/" className="hover:text-gray-700">
             ← হোম পেজে ফিরে যান
           </Link>

@@ -83,7 +83,7 @@ const ProfilePage = () => {
 
   if (isPending) {
     return (
-      <div className="mt-8 sm:mt-12 lg:mt-18 px-4 sm:px-0 text-sm sm:text-base text-gray-600">
+      <div className="mt-6 sm:mt-12 lg:mt-18 px-4 sm:px-0 text-sm sm:text-base text-gray-600">
         প্রোফাইল লোড হচ্ছে...
       </div>
     );
@@ -91,8 +91,8 @@ const ProfilePage = () => {
 
   if (!user) {
     return (
-      <div className="mt-8 sm:mt-12 lg:mt-18 rounded-2xl bg-[#FAFCFA] p-4 sm:p-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+      <div className="mt-6 sm:mt-12 lg:mt-18 rounded-2xl bg-[#FAFCFA] p-4 sm:p-6">
+        <h2 className="text-lg min-[400px]:text-xl sm:text-2xl font-bold text-gray-900">
           আমার প্রোফাইল
         </h2>
 
@@ -103,7 +103,7 @@ const ProfilePage = () => {
         <button
           type="button"
           onClick={() => router.push("/login")}
-          className="mt-4 sm:mt-5 w-full sm:w-auto rounded-lg bg-[#05893E] px-5 py-3 font-semibold text-white hover:bg-[#047832]"
+          className="mt-4 sm:mt-5 w-full sm:w-auto rounded-lg bg-[#05893E] px-5 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white hover:bg-[#047832]"
         >
           সাইন ইন
         </button>
@@ -112,22 +112,22 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="mt-8 sm:mt-12 lg:mt-18">
-      <h2 className="py-2 text-2xl sm:text-3xl font-bold text-gray-900">
+    <div className="mt-6 sm:mt-12 lg:mt-18">
+      <h2 className="py-1 sm:py-2 text-xl min-[400px]:text-2xl sm:text-3xl font-bold text-gray-900">
         আমার প্রোফাইল
       </h2>
 
-      <p className="mb-6 sm:mb-9 text-sm sm:text-base text-[#69706B]">
+      <p className="mb-5 sm:mb-9 text-xs sm:text-sm lg:text-base text-[#69706B]">
         আপনার অ্যাকাউন্টের তথ্য এখানে দেখুন।
       </p>
 
       {/* Profile Card */}
-      <div className="flex flex-col justify-between gap-4 sm:gap-5 rounded-2xl bg-[#FAFCFA] p-4 sm:p-6 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col justify-between gap-3.5 sm:gap-5 rounded-2xl bg-[#FAFCFA] p-3.5 min-[400px]:p-4 sm:p-6 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="shrink-0">
             {user.image ? (
               <Image
-                className="h-14 w-14 sm:h-17.5 sm:w-17.5 rounded-2xl object-cover"
+                className="h-12 w-12 min-[400px]:h-14 min-[400px]:w-14 sm:h-[70px] sm:w-[70px] rounded-2xl object-cover"
                 alt="Profile avatar"
                 src={user.image}
                 width={70}
@@ -139,7 +139,7 @@ const ProfilePage = () => {
           </div>
 
           <div className="min-w-0">
-            <h3 className="wrap-break-word text-lg font-medium text-gray-900 sm:text-2xl">
+            <h3 className="break-words text-base min-[400px]:text-lg font-medium text-gray-900 sm:text-xl lg:text-2xl">
               {user.name || "নাম দেওয়া হয়নি"}
             </h3>
 
@@ -161,19 +161,19 @@ const ProfilePage = () => {
       </div>
 
       {/* Profile Information */}
-      <div className="mt-4 sm:mt-5 rounded-2xl bg-[#FAFCFA] p-4 sm:p-5">
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+      <div className="mt-3.5 sm:mt-5 rounded-2xl bg-[#FAFCFA] p-3.5 min-[400px]:p-4 sm:p-5">
+        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
           তথ্য
         </h3>
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-4 p-1 sm:p-6 lg:p-9"
+          className="space-y-4 pt-3 sm:p-6 lg:max-w-2xl lg:p-9"
         >
           <div>
             <label
               htmlFor="name"
-              className="mb-2 block text-sm font-semibold text-gray-700"
+              className="mb-1.5 sm:mb-2 block text-sm font-semibold text-gray-700"
             >
               আপনার নাম
             </label>
@@ -187,7 +187,7 @@ const ProfilePage = () => {
               placeholder={currentName || "আপনার নাম লিখুন"}
               autoComplete="name"
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
+              className="block w-full min-w-0 rounded-lg border border-gray-300 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
             />
           </div>
 
@@ -195,7 +195,7 @@ const ProfilePage = () => {
           <button
             type="submit"
             disabled={loading || name.trim() === currentName}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#05893E] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-green-700/20 transition-all duration-200 hover:bg-[#047832] hover:shadow-lg active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#05893E] px-5 py-2.5 sm:py-3 text-sm font-semibold text-white shadow-md shadow-green-700/20 transition-all duration-200 hover:bg-[#047832] hover:shadow-lg active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-10"
           >
             {loading ? "আপডেট হচ্ছে..." : "আপডেট"}
           </button>

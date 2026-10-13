@@ -2,69 +2,85 @@
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { BiLogOut } from "react-icons/bi";
-import { FaUser } from "react-icons/fa";
+import { FaAngleDown, FaUser } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 
 const UserInfo = () => {
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
   const handleSignOut = async () => {
     await authClient.signOut();
   };
 
+  // Wait for the session, so the sign-in buttons don't flash
+  if (isPending) {
+    return <div className="h-9 w-20 animate-pulse rounded-xl bg-[#F0F5F0] sm:h-10 sm:w-24" />;
+  }
+
+  if (!user) {
+    return (
+      <div className="flex items-center gap-2 whitespace-nowrap sm:gap-4 text-xs sm:text-sm lg:text-base dropdown dropdown-end group">
+        <Link href="/signin">সাইন ইন</Link>
+        <Link
+          href="/signup"
+          className="rounded-xl bg-[#05893E] px-2.5 py-1.5 text-white sm:px-4 sm:py-2"
+        >
+          সাইন আপ
+        </Link>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {user ? (
-        <div>
-          <div className="dropdown dropdown-end ">
-            <div
-              tabIndex={0}
-              role="button"
-              className="flex gap-3 items-center text-center cursor-pointer m-1"
-            >
-              {
-                user?.image ? <Image
-                className="rounded-2xl"
-                alt="Tailwind-CSS-Avatar-component"
-                src={user?.image as string}
-                width={50}
-                height={50}
-              />: <FaCircleUser className="text-2xl " />
-              }
-              
-              <h3 className="font-bold text-xl">{user?.name}</h3>
-            </div>
-            <div
-              tabIndex={-1}
-              className="dropdown-content shadow-lg shadow-[#5F6761 menu bg-[#FAFCFA] rounded-box z-1 w-89 p-7 rounded-2xl shadow-sm"
-            >
-              <h3 className="text-2xl font-medium">{user?.name}</h3>
-              <p className="text-[#5F6761] text-[18px]">{user?.email}</p>
-              <Link href='/profile'>
-              <p className="flex gap-2 items-center text-[19px] font-normal py-3">
-                <FaUser /> আমার প্রোফাইল
-              </p>
-              </Link>
-              <p onClick={handleSignOut} className="cursor-pointer flex gap-2 items-center text-red-400 text-[17px] pb-4">
-                <BiLogOut /> সাইন আউট
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="dropdown dropdown-end group">
+    <div
+      tabIndex={0}
+      role="button"
+      className="m-0.5 flex cursor-pointer items-center gap-1.5 sm:m-1 sm:gap-3"
+    >
+      {user.image ? (
+        <Image
+          className="h-9 w-9 shrink-0 rounded-2xl object-cover sm:h-11 sm:w-11"
+          alt={user.name ?? "ব্যবহারকারী"}
+          src={user.image}
+          width={50}
+          height={50}
+        />
       ) : (
-        <div className="flex items-center gap-4">
-          <Link href="/signin">সাইন ইন</Link>
-          <Link
-            href="/signup"
-            className="py-2 px-4 bg-[#05893E] text-[#ffffff] rounded-xl"
-          >
-            সাইন আপ
-          </Link>
-        </div>
+        <FaCircleUser className="shrink-0 text-4xl sm:text-[2.75rem]" />
       )}
+
+      <h3 className="hidden max-w-28 truncate text-base font-bold sm:block lg:max-w-40 lg:text-lg">
+        {user.name}
+      </h3>
+
+      <FaAngleDown className="shrink-0 text-xs transition-transform duration-200 group-focus-within:rotate-180" />
+    </div>
+
+      <div
+        tabIndex={-1}
+        className="dropdown-content z-10 mt-2 w-64 max-w-[calc(100vw-1.5rem)] rounded-2xl border border-[#DCE5DE] bg-[#FAFCFA] p-4 shadow-lg min-[400px]:w-72 sm:w-80 sm:p-6"
+      >
+        <h3 className="truncate text-lg font-medium sm:text-xl">{user.name}</h3>
+        <p className="truncate text-sm text-[#5F6761] sm:text-base">{user.email}</p>
+
+        <Link
+          href="/profile"
+          className="flex items-center gap-2 py-3 text-base sm:text-lg"
+        >
+          <FaUser /> আমার প্রোফাইল
+        </Link>
+
+        <button
+          type="button"
+          onClick={handleSignOut}
+          className="flex cursor-pointer items-center gap-2 text-sm text-red-400 sm:text-base"
+        >
+          <BiLogOut /> সাইন আউট
+        </button>
+      </div>
     </div>
   );
 };
