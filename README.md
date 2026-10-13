@@ -5,8 +5,11 @@
 **প্রয়োজনীয় পণ্যের দাম এক নজরে।**
 A Bengali market-price tracker for everyday essentials (rice, lentils, oil, vegetables, fish, meat, dairy and spices) across markets in Bangladesh.
 
-[Live Demo](https://your-app.vercel.app) · [GitHub Repository](https://github.com/your-username/bazar-dor)
+## 🚀 Live Demo
 
+🔗 **Live Website:** https://bazar-dor-eight-pi.vercel.app/
+
+🔗 **GitHub Repository:** https://github.com/SobojCoder/bazar-dor
 </div>
 
 ---
