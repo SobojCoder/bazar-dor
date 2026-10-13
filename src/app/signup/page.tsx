@@ -2,12 +2,26 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
 
-const fields = [
+type FormValues = {
+  name: string;
+  email: string;
+  password: string;
+  confirm: string;
+};
+
+const fields: {
+  name: keyof FormValues;
+  label: string;
+  type: string;
+  placeholder: string;
+  autoComplete: string;
+}[] = [
   {
     name: "name",
     label: "নাম",
@@ -39,7 +53,9 @@ const fields = [
 ];
 
 export default function SignUpForm() {
-  const [values, setValues] = useState({
+  const router = useRouter();
+
+  const [values, setValues] = useState<FormValues>({
     name: "",
     email: "",
     password: "",
@@ -48,61 +64,70 @@ export default function SignUpForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) =>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setValues((v) => ({ ...v, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+  const showError = (message: string) => {
+    setError(message);
+    toast.error(message);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const formData = new FormData(e.target)
-    const user = Object.fromEntries(formData.entries()) as {name:string, email:string, password:string}
-
-    const {data, error} = await authClient.signUp.email({
-        ...user,
-        callbackURL: "/"
-    })
-
-    if(data){
-        console.log(data);
-        redirect('/')
-    }
-    if(error){
-
-        console.log(error);
-    }
-
     setError("");
 
+    // ১. আগে যাচাই, তারপর সার্ভারে পাঠানো
+    if (!values.name.trim()) {
+      return showError("আপনার নাম লিখুন।");
+    }
+    if (!values.email.trim()) {
+      return showError("আপনার ইমেইল লিখুন।");
+    }
     if (values.password.length < 8) {
-      return setError("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
+      return showError("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
     }
     if (values.password !== values.confirm) {
-      return setError("দুটি পাসওয়ার্ড মিলছে না।");
+      return showError("দুটি পাসওয়ার্ড মিলছে না।");
     }
 
     setLoading(true);
     try {
-      // TODO: call your register API here
-      // await fetch("/api/register", { method: "POST", body: JSON.stringify(values) });
+      const { data, error } = await authClient.signUp.email({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        password: values.password,
+      });
+
+      // ২. ব্যর্থ হলে toast ও ফর্মে বার্তা
+      if (error) {
+        return showError(error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
+      }
+
+      // ৩. সফল হলে লগইন পেজে নেওয়া
+      if (data) {
+        toast.success("অ্যাকাউন্ট তৈরি হয়েছে! এখন সাইন ইন করুন।");
+        router.push("/signin");
+      }
     } catch {
-      setError("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+      showError("কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleSignIn = async() =>{
-          const data = await authClient.signIn.social({
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
       provider: "google",
+      callbackURL: "/",
     });
-    console.log(data);
-      }
-  const handleGithubSignIn = async() =>{
-          const data = await authClient.signIn.social({
+  };
+
+  const handleGithubSignIn = async () => {
+    await authClient.signIn.social({
       provider: "github",
+      callbackURL: "/",
     });
-    console.log(data);
-      }
+  };
 
   return (
     <main className="min-h-screen bg-emerald-50/60 px-3 py-6 sm:px-4 sm:py-10 lg:py-14">
@@ -170,7 +195,7 @@ export default function SignUpForm() {
           {/* Social buttons */}
           <div className="grid grid-cols-1 gap-2.5 sm:gap-3">
             <button
-            onClick={handleGoogleSignIn}
+              onClick={handleGoogleSignIn}
               type="button"
               className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-xs min-[360px]:text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >
@@ -178,7 +203,7 @@ export default function SignUpForm() {
               Google দিয়ে চালিয়ে যান
             </button>
             <button
-            onClick={handleGithubSignIn}
+              onClick={handleGithubSignIn}
               type="button"
               className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-xs min-[360px]:text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
             >

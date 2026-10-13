@@ -6,16 +6,16 @@ import MarqueeText from "react-marquee-text";
 import "react-marquee-text/dist/styles.css";
 
 const Marquee = async () => {
-  "use cache";
 
-  const res = await fetch("https://openapi.programming-hero.com/api/bazardor/products");
+  const res = await fetch("https://openapi.programming-hero.com/api/bazardor/products",
+  { next: { revalidate: 3600 } },);
   const data = await res.json();
 
   // Duplicate the data
   const marqueeData = [...data, ...data];
 
   return (
-    <MarqueeText duration={15} direction="right">
+    <MarqueeText duration={13} direction="right">
       <div className="flex border-b border-[#d2d2d2] bg-[#FAFCFA] whitespace-nowrap">
         {marqueeData.map((element, index) => {
           return (

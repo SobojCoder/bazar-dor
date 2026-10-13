@@ -5,7 +5,6 @@ import { toBn } from "@/utills/numEngToBn";
 import { toBnUnit } from "@/utills/toBnUnits";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import React from "react";
 import { FaAngleRight } from "react-icons/fa";
 
 // সংখ্যাকে বাংলায় রূপান্তর: 62.5 → ৬২.৫০ টাকা
@@ -26,25 +25,35 @@ const ItemDetails = async ({
     "https://openapi.programming-hero.com/api/bazardor/products",
   );
   const data = await res.json();
-  const item = data.find((i: IProduct) => String(i.id) === String(itemId));
-
-  const result = item.markets.reduce(
-    (acc: { min: number; max: number }, item: IMarket) => {
-      acc.min = Math.min(acc.min, item.min);
-      acc.max = Math.max(acc.max, item.max);
-      // acc.total = (item.min + item.max) / 2;
-
-      return acc;
-    },
+  const item: IProduct | undefined = data.find(
+    (i: IProduct) => String(i.id) === String(itemId),
   );
 
-  const avg = (result.min + result.max) / 2;
-
-  console.log("Minimum:", result.min); // 140
-  console.log("Maximum:", result.max); // 170
-  console.log("Average:", avg); // 155.17
-
+  // পণ্য না পেলে আগেই ৪০৪
   if (!item) notFound();
+
+  const markets: IMarket[] = item.markets ?? [];
+
+  // min/max: প্রাথমিক মান সহ, মূল অবজেক্ট না বদলিয়ে
+  const result = markets.length
+    ? markets.reduce(
+        (acc, market) => ({
+          min: Math.min(acc.min, market.min),
+          max: Math.max(acc.max, market.max),
+        }),
+        { min: Infinity, max: -Infinity },
+      )
+    : { min: 0, max: 0 };
+
+  // গড়: সব বাজারের গড় দামের গড়
+  const avg = markets.length
+    ? markets.reduce((sum, m) => sum + (m.min + m.max) / 2, 0) / markets.length
+    : 0;
+
+  const pct = item.change?.pct ?? 0;
+  const diff = item.today - item.yesterday;
+
+  const emoji = item.image ?? item.categoryIcon;
 
   return (
     <ProtectedRoute>
@@ -58,43 +67,64 @@ const ItemDetails = async ({
         <FaAngleRight className="shrink-0 text-xs" />
         <span className="min-w-0 truncate">{item.nameBn}</span>
       </p>
+
       {/* top section */}
       <div className="flex flex-col sm:flex-row justify-between gap-3.5 sm:gap-4 my-3 sm:my-6 sm:items-center bg-white py-3.5 sm:py-6 px-3.5 sm:px-6 rounded-2xl">
         <div className="flex gap-3 sm:gap-4 min-w-0">
           <span className="shrink-0 self-start text-xl sm:text-3xl lg:text-4xl py-2.5 px-2.5 sm:py-4 sm:px-4 bg-[#F0F5F0] rounded-2xl">
-            {item.categoryIcon}
+            {emoji}
           </span>
 
           <div className="min-w-0 text-xs sm:text-sm lg:text-base">
             <h2 className="text-lg sm:text-2xl lg:text-3xl font-bold">{item.nameBn}</h2>
-            <p className="text-[#5C655E]">{`প্রতি ${toBnUnit(item.unit)} · ${item.categoryNameBn}`}</p>
-            {item.yesterday - item.today >= 0 ? (
-              <p>
-                গতকালের তুলনায় আজ দাম{" "}
-                <span className="font-bold">বেড়েছে</span> ·{" "}
-                <span>{toBn(item.yesterday - item.today)}</span> টাকা
-              </p>
-            ) : (
-              <p>
-                গতকালের তুলনায় আজ দাম <span className="font-bold">কমেছে</span>{" "}
-                · <span>{toBn(item.today - item.yesterday)}</span> টাকা
-              </p>
-            )}
+
+            {/* Subtitle */}
+            <p className="mt-1 text-[#5C655E]">{`প্রতি ${toBnUnit(item.unit)} · ${item.categoryNameBn}`}</p>
+
+            {/* Category tags */}
+            
+
+            {/* বাড়া/কমার লেখা: আজকের দাম - গতকালের দাম */}
+            <p className="mt-2">
+              {diff > 0 ? (
+                <>
+                  গতকালের তুলনায় আজ দাম{" "}
+                  <span className="font-bold">বেড়েছে</span> ·{" "}
+                  <span>{toBn(diff)}</span> টাকা
+                </>
+              ) : diff < 0 ? (
+                <>
+                  গতকালের তুলনায় আজ দাম{" "}
+                  <span className="font-bold">কমেছে</span> ·{" "}
+                  <span>{toBn(Math.abs(diff))}</span> টাকা
+                </>
+              ) : (
+                <>
+                  গতকালের তুলনায় আজ দাম{" "}
+                  <span className="font-bold">অপরিবর্তিত</span>
+                </>
+              )}
+            </p>
           </div>
         </div>
+
         <div className="w-full sm:w-auto sm:min-w-40 shrink-0 text-center bg-[#F0F5F0] py-2 px-4 rounded-2xl">
           <p className="text-xs sm:text-sm text-[#5C655E]">আজকের দাম</p>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold">{toBn(item.today)}</h2>
           <p className="text-xs sm:text-sm pb-2 text-[#5C655E]">টাকা / {toBnUnit(item.unit)}</p>{" "}
-          {item.change.pct < 0 ? (
-            <span className="inline-block text-xs sm:text-sm text-red-500 bg-[#F0F5F0] rounded-3xl px-3 sm:px-4 py-1">
-              {" "}
-              ▲ {toBn(Math.abs(item.change.pct))}%{" "}
+
+          {/* ব্যাজ: কমলে লাল ▼, বাড়লে সবুজ ▲ */}
+          {pct === 0 ? (
+            <span className="inline-block text-xs sm:text-sm text-gray-500 bg-white rounded-3xl px-3 sm:px-4 py-1">
+              — ০.০%
+            </span>
+          ) : pct < 0 ? (
+            <span className="inline-block text-xs sm:text-sm text-red-500 bg-white rounded-3xl px-3 sm:px-4 py-1">
+              ▼ {toBn(Math.abs(pct))}%
             </span>
           ) : (
-            <span className="inline-block text-xs sm:text-sm text-green-500 bg-[#F0F5F0] rounded-3xl px-3 sm:px-4 py-1">
-              {" "}
-              ▼ {toBn(Math.abs(item.change.pct))}%{" "}
+            <span className="inline-block text-xs sm:text-sm text-green-500 bg-white rounded-3xl px-3 sm:px-4 py-1">
+              ▲ {toBn(Math.abs(pct))}%
             </span>
           )}
         </div>
@@ -106,25 +136,25 @@ const ItemDetails = async ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 px-0 sm:px-2 lg:px-7">
             <div className="border border-gray-200 p-3.5 sm:p-4 my-1 sm:my-4 rounded-2xl">
               <p className="text-xs sm:text-sm">সর্বনিম্ন দাম</p>
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1A9951]">{`${toBn(result.min)} টাকা`}</h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1A9951]">{formatTaka(result.min)}</h2>
               <p className="text-xs sm:text-sm">সবচেয়ে কম দামের বাজার</p>
             </div>
 
             <div className="border border-gray-200 p-3.5 sm:p-4 my-1 sm:my-4 rounded-2xl">
               <p className="text-xs sm:text-sm">সর্বাধিক দাম</p>
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#D03739]">{`${toBn(result.max)} টাকা`}</h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#D03739]">{formatTaka(result.max)}</h2>
               <p className="text-xs sm:text-sm">সবচেয়ে বেশি দামের বাজার</p>
             </div>
 
             <div className="border border-gray-200 p-3.5 sm:p-4 my-1 sm:my-4 rounded-2xl">
               <p className="text-xs sm:text-sm">গড় দাম</p>
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1A9951]">{`${toBn(avg)} টাকা`}</h2>
-              <p className="text-xs sm:text-sm">প্রতি কেজি-এর হিসাবে</p>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#1A9951]">{formatTaka(avg)}</h2>
+              <p className="text-xs sm:text-sm">{`প্রতি ${toBnUnit(item.unit)}-এর হিসাবে`}</p>
             </div>
           </div>
         </div>
-        <h2 className="mt-4 sm:mt-6 font-bold text-base sm:text-lg lg:text-xl">বাজারভিত্তিক আজকের দাম</h2>
-        <h2 className="mb-3 sm:mb-4 text-base sm:text-lg lg:text-xl font-bold">{item.name}</h2>
+
+        <h2 className="mt-4 sm:mt-6 mb-3 sm:mb-4 font-bold text-base sm:text-lg lg:text-xl">বাজারভিত্তিক আজকের দাম</h2>
 
         {/* বাইরের রাউন্ড বর্ডার বক্স */}
         <div className="max-w-full overflow-x-auto rounded-xl border  border-gray-200 bg-white shadow-sm">
@@ -140,7 +170,7 @@ const ItemDetails = async ({
             </thead>
 
             <tbody>
-              {item.markets.map((market: IMarket, ind: number) => (
+              {markets.map((market: IMarket, ind: number) => (
                 <tr
                   key={ind}
                   className="border-b border-gray-300 last:border-b-0 odd:bg-white even:bg-emerald-50/60"
@@ -169,4 +199,4 @@ const ItemDetails = async ({
   );
 };
 
-export default ItemDetails;
+export default ItemDetails;   

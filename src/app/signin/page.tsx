@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export default function SignInForm() {
   const [values, setValues] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) =>
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     setValues((v) => ({ ...v, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
@@ -30,7 +30,7 @@ console.log(user);
         console.log(data);
     }
     if(error){
-        toast.error(error.message)
+        toast.error(error.message ?? "Sign in failed")
         console.log(error);
     }
 

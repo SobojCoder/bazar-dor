@@ -3,21 +3,21 @@ import { IProduct } from "@/Type/product.type";
 import ProductCard from "../card/productCard";
 
 const AllProduct = async () => {
-  "use cache";
 
   const res = await fetch(
     "https://openapi.programming-hero.com/api/bazardor/products",
+  { next: { revalidate: 3600 } },
   );
   const Products: IProduct[] = await res.json();
 
   return (
     <section
       id="all-product"
-      className="mt-6 sm:mt-8 lg:mt-10 w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 scroll-mt-20"
+      className="mt-6 sm:mt-8 lg:mt-10 w-full scroll-mt-20"
     >
       {/* Heading */}
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between mb-4 sm:mb-6">
-        <h2 className="text-lg sm:text-2xl lg:text-3xl font-bold">
+      <div className=" mb-4 sm:mb-6">
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">
           সব পণ্য
         </h2>
         <p className="text-xs sm:text-sm lg:text-base text-[#7C837D]">
@@ -26,7 +26,7 @@ const AllProduct = async () => {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-2.5 sm:gap-4 lg:gap-5">
         {Products.map((product) => (
           <Link
             key={product.id}

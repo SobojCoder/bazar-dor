@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BiLogOut } from "react-icons/bi";
 import { FaCircleUser } from "react-icons/fa6";
-import { toast } from "react-toastify";
+import { FaUserEdit } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -14,51 +16,7 @@ const ProfilePage = () => {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
-
-  // Update the input when the user data becomes available
-  const currentName = user?.name ?? "";
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const updatedName = name.trim();
-
-    if (!updatedName) {
-      toast.error("আপনার নাম লিখুন।");
-      return;
-    }
-
-    if (updatedName === currentName) {
-      toast.info("আপনার নামে কোনো পরিবর্তন হয়নি।");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const { data, error } = await authClient.updateUser({
-        name: updatedName,
-      });
-
-      if (error) {
-        toast.error(error.message || "প্রোফাইল আপডেট করা যায়নি।");
-        return;
-      }
-
-      if (data) {
-        toast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে!");
-        // Refresh session-dependent UI if needed
-        await authClient.getSession();
-      }
-    } catch {
-      toast.error("একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -102,7 +60,7 @@ const ProfilePage = () => {
 
         <button
           type="button"
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/signin")}
           className="mt-4 sm:mt-5 w-full sm:w-auto rounded-lg bg-[#05893E] px-5 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white hover:bg-[#047832]"
         >
           সাইন ইন
@@ -149,57 +107,25 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={handleSignOut}
-          disabled={signingOut}
-          className="inline-flex w-full sm:w-auto shrink-0 items-center justify-center gap-2 self-start rounded-lg border border-red-400 px-4 py-2 text-sm sm:text-base text-red-500 transition hover:bg-red-50 disabled:opacity-60 sm:self-auto"
-        >
-          <BiLogOut size={20} />
-          {signingOut ? "অপেক্ষা করুন..." : "সাইন আউট"}
-        </button>
-      </div>
-
-      {/* Profile Information */}
-      <div className="mt-3.5 sm:mt-5 rounded-2xl bg-[#FAFCFA] p-3.5 min-[400px]:p-4 sm:p-5">
-        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
-          তথ্য
-        </h3>
-
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4 pt-3 sm:p-6 lg:max-w-2xl lg:p-9"
-        >
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-1.5 sm:mb-2 block text-sm font-semibold text-gray-700"
-            >
-              আপনার নাম
-            </label>
-
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={currentName || "আপনার নাম লিখুন"}
-              autoComplete="name"
-              required
-              className="block w-full min-w-0 rounded-lg border border-gray-300 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-600 focus:ring-2 focus:ring-green-600/20"
-            />
-          </div>
-
+        <div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:gap-3">
+          <Link
+            href="/profile/update"
+            className="inline-flex w-full sm:w-auto shrink-0 items-center justify-center gap-2 rounded-lg bg-[#05893E] px-4 py-2 text-sm sm:text-base font-semibold text-white transition hover:bg-[#047832]"
+          >
+            <FaUserEdit size={18} />
+            আপডেট
+          </Link>
 
           <button
-            type="submit"
-            disabled={loading || name.trim() === currentName}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#05893E] px-5 py-2.5 sm:py-3 text-sm font-semibold text-white shadow-md shadow-green-700/20 transition-all duration-200 hover:bg-[#047832] hover:shadow-lg active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-10"
+            type="button"
+            onClick={handleSignOut}
+            disabled={signingOut}
+            className="inline-flex w-full sm:w-auto shrink-0 items-center justify-center gap-2 rounded-lg border border-red-400 px-4 py-2 text-sm sm:text-base text-red-500 transition hover:bg-red-50 disabled:opacity-60"
           >
-            {loading ? "আপডেট হচ্ছে..." : "আপডেট"}
+            <BiLogOut size={20} />
+            {signingOut ? "অপেক্ষা করুন..." : "সাইন আউট"}
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

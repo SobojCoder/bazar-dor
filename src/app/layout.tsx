@@ -6,7 +6,7 @@ import Navbar from "@/components/homepage/Navbar";
 import Marquee from "@/components/homepage/Marquee";
 import Footer from "@/components/homepage/Footer";
 import { Suspense } from "react";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </Suspense>
           </main>
         <Footer />
-        <ToastContainer />
+        <Toaster position="top-center" />
       </body>
     </html>
   );

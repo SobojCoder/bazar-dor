@@ -1,17 +1,41 @@
 "use client";
+import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+
 import { BiLogOut } from "react-icons/bi";
 import { FaAngleDown, FaUser } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 
 const UserInfo = () => {
+  const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
+  const [signingOut, setSigningOut] = useState(false);
+
   const handleSignOut = async () => {
-    await authClient.signOut();
+    setSigningOut(true);
+
+    try {
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        toast.error(error.message || "সাইন আউট করা যায়নি।");
+        return;
+      }
+
+      toast.success("সফলভাবে সাইন আউট হয়েছে!");
+      router.push("/");
+      router.refresh();
+    } catch {
+      toast.error("সাইন আউট করার সময় সমস্যা হয়েছে।");
+    } finally {
+      setSigningOut(false);
+    }
   };
 
   // Wait for the session, so the sign-in buttons don't flash
@@ -76,9 +100,10 @@ const UserInfo = () => {
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex cursor-pointer items-center gap-2 text-sm text-red-400 sm:text-base"
+          disabled={signingOut}
+          className="flex cursor-pointer items-center gap-2 text-sm text-red-400 disabled:opacity-60 sm:text-base"
         >
-          <BiLogOut /> সাইন আউট
+          <BiLogOut /> {signingOut ? "অপেক্ষা করুন..." : "সাইন আউট"}
         </button>
       </div>
     </div>
