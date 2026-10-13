@@ -1,174 +1,160 @@
-<div align="center">
+# 🛒 বাজার দর (BazarDor)
 
-# 🛒 বাজার দর | BazarDor
+**নিত্যপ্রয়োজনীয় পণ্যের বর্তমান বাজারদর জানুন এক নজরে।**
 
-**প্রয়োজনীয় পণ্যের দাম এক নজরে।**
-A Bengali market-price tracker for everyday essentials (rice, lentils, oil, vegetables, fish, meat, dairy and spices) across markets in Bangladesh.
+বাজার দর একটি responsive web application, যেখানে ব্যবহারকারীরা বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের দৈনিক দাম, দাম বৃদ্ধি ও হ্রাসের তথ্য এবং বিভিন্ন বাজারের মূল্য তুলনা করতে পারবেন। ব্যবহারকারীরা category অনুযায়ী পণ্য দেখতে পারবেন এবং বিস্তারিত price information দেখার জন্য authentication ব্যবহার করতে পারবেন।
 
-## 🚀 Live Demo
+## 🌐 Live Demo
 
-🔗 **Live Website:** https://bazar-dor-eight-pi.vercel.app/
-
-🔗 **GitHub Repository:** https://github.com/SobojCoder/bazar-dor
-</div>
-
----
-
-## 📖 Description
-
-**BazarDor (বাজার দর)** helps people see today's prices of daily-use products at a glance. It shows how each price changed compared to yesterday, which products rose or fell the most, and the minimum, maximum and average price across different bazaars and divisions. The whole interface is in Bengali, including Bengali numerals and the Bangla date.
-
-Product data comes from the public BazarDor API (`https://openapi.programming-hero.com/api/bazardor`).
+- **Live Link:** [Add Your Deployed Website URL]
+- **GitHub Repository:** [Add Your GitHub Repository URL]
 
 ## ✨ Key Features
 
-1. **Live price ticker:** an infinite scrolling marquee below the header showing emoji, product name, price per unit and a green ▲ / red ▼ change percentage.
-2. **Top risers and fallers:** the home page highlights the 6 products whose price rose the most ("আজ দাম বেড়েছে ▲") and fell the most ("আজ দাম কমেছে ▼").
-3. **Category browsing with sorting:** category navigation with an active-link highlight, plus a sort dropdown (Default, Price: Low to High, Price: High to Low) that sorts by numeric value.
-4. **Detailed price breakdown:** each product page shows the minimum, maximum and average price and a market-by-market table with division, min, max and average. This page is a protected route.
-5. **Authentication with Better Auth:** email and password sign up and sign in, Google and GitHub social login, and sign out, with toast notifications for success and errors.
-6. **Profile management:** a profile page where users can view their account and update their name on a separate route.
-7. **Polished UX:** skeleton loaders while data loads, a friendly custom 404 page and an empty state for categories without products.
-8. **Fully responsive:** designed for mobile (single-column grids), tablet and desktop.
+1. **📊 Daily Price Updates** — চাল, ডাল, সবজি, মাছ, মাংসসহ বিভিন্ন নিত্যপ্রয়োজনীয় পণ্যের দাম দেখা যায়।
+2. **📈 Price Increase & Decrease** — আজ কোন পণ্যের দাম বেড়েছে বা কমেছে, তার তালিকা দেখা যায়।
+3. **🔎 Product Details** — পণ্যের সর্বনিম্ন, সর্বোচ্চ ও গড় দাম এবং বিভিন্ন বাজারের মূল্য দেখা যায়।
+4. **🗂️ Category-Based Browsing** — category অনুযায়ী পণ্য খোঁজা এবং দাম কম থেকে বেশি বা বেশি থেকে কম সাজানো যায়।
+5. **🔐 Secure Authentication** — Better Auth-এর মাধ্যমে email/password, Google এবং GitHub login ও registration।
+6. **👤 Profile Management** — ব্যবহারকারীরা নিজের profile information update করতে পারেন।
+7. **📱 Fully Responsive Design** — mobile, tablet ও desktop-এ ব্যবহার উপযোগী interface।
+8. **🔔 Toast Notifications** — login, registration, logout এবং validation-এর success/error feedback।
+9. **⏳ Loading & Error States** — data loading indicator এবং invalid route-এর জন্য friendly 404 page।
+10. **🇧🇩 Bengali User Interface** — বাংলা ভাষা, বাংলা সংখ্যা এবং স্থানীয় বাজারের জন্য উপযোগী presentation।
 
 ## 🛠️ Technologies Used
 
 | Technology | Purpose |
-| --- | --- |
-| [Next.js](https://nextjs.org/) (App Router) | Framework, routing and server rendering |
-| [TypeScript](https://www.typescriptlang.org/) | Type safety |
-| [Tailwind CSS](https://tailwindcss.com/) | Styling and responsive design |
-| [DaisyUI](https://daisyui.com/) | UI components (dropdowns) |
-| [Better Auth](https://www.better-auth.com/) | Email/password, Google and GitHub authentication |
-| [react-hot-toast](https://react-hot-toast.com/) | Toast notifications |
-| [react-icons](https://react-icons.github.io/react-icons/) | Icons |
-| [react-marquee-text](https://www.npmjs.com/package/react-marquee-text) | Scrolling price ticker |
+|---|---|
+| Next.js | React-based web application and routing |
+| React | Reusable UI components |
+| TypeScript | Type safety and maintainable code |
+| Tailwind CSS | Responsive styling and layout |
+| Better Auth | Authentication and user management |
+| React Hot Toast | Success and error notifications |
+| REST API | Product and category data |
+| Git & GitHub | Version control and source code management |
+| Vercel | Deployment and hosting |
 
-## 🗺️ Routes
+## 📂 Main Application Sections
 
-| Route | Description | Access |
-| --- | --- | --- |
-| `/` | Home: ticker, top risers, top fallers, all products | Public |
-| `/productsDetails/[productId]` | Category page with sorting | Public |
-| `/itemDetails/[itemId]` | Product details with market-wise prices | Protected |
-| `/signin` | Sign in | Public |
-| `/signup` | Sign up | Public |
-| `/profile` | My profile | Signed-in users |
-| `/profile/update` | Update profile name | Signed-in users |
-| `*` | Custom 404 page | Public |
+- **Navbar:** Logo, Bengali date, category navigation and authentication controls।
+- **Price Ticker:** Scrolling strip showing product names, prices and percentage changes।
+- **Hero Banner:** Introductory section with a call-to-action button leading to all products।
+- **Price Trends:** Separate sections for products whose prices increased or decreased।
+- **All Products:** Responsive product-card grid with Bengali prices and change indicators।
+- **Category Page:** Category-specific products with price sorting and empty states।
+- **Product Details:** Product summary, minimum/maximum/average prices and market-wise prices।
+- **Authentication:** Sign-in, sign-up and social login options।
+- **My Profile:** User information and profile update functionality।
+- **404 Page:** Friendly error page with a button to return to the home page।
+- **Footer:** Project information and a market-price disclaimer।
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18 or later
-- npm (or yarn / pnpm)
-- A database supported by Better Auth
-- Google and GitHub OAuth credentials (for social login)
+Make sure you have the following installed:
 
-### Installation
+- Node.js (LTS version recommended)
+- npm, yarn, pnpm or bun
+- Git
+
+### 1. Clone the Repository
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/bazar-dor.git
+git clone YOUR_GITHUB_REPOSITORY_URL
+```
+
+### 2. Navigate to the Project
+
+```bash
 cd bazar-dor
+```
 
-# 2. Install dependencies
+### 3. Install Dependencies
+
+```bash
 npm install
+```
 
-# 3. Create the environment file (see below)
-cp .env.example .env.local
+### 4. Configure Environment Variables
 
-# 4. Run the development server
+Create a `.env.local` file in the root directory and add the environment variables required by your Better Auth configuration.
+
+Example:
+
+```env
+BETTER_AUTH_SECRET=your_secure_secret
+BETTER_AUTH_URL=http://localhost:3000
+
+# Add your database configuration
+# Add Google OAuth credentials
+# Add GitHub OAuth credentials
+```
+
+Use the exact environment variable names expected by your project configuration. Set the production values and OAuth callback URLs in your hosting provider's environment settings. **Never commit real secrets or OAuth credentials to GitHub.**
+
+### 5. Run the Development Server
+
+```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Environment Variables
-
-Create a `.env.local` file in the project root. Use the variable names your auth setup reads:
-
-```env
-BETTER_AUTH_SECRET=your_random_secret
-BETTER_AUTH_URL=http://localhost:3000
-
-# Database connection used by Better Auth
-DATABASE_URL=your_database_connection_string
-
-# Google OAuth
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-# GitHub OAuth
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-```
-
-For OAuth, add these callback URLs in the Google and GitHub developer consoles:
-
-- `http://localhost:3000/api/auth/callback/google`
-- `http://localhost:3000/api/auth/callback/github`
-
-After deployment, add the same two paths with your live domain.
-
-### Available Scripts
+### 6. Build for Production
 
 ```bash
-npm run dev     # Start the development server
-npm run build   # Create a production build
-npm run start   # Run the production build
-npm run lint    # Lint the code
+npm run build
 ```
 
-## ☁️ Deployment
+To run the production build locally:
 
-The project is deployed on **Vercel**.
-
-1. Push the repository to GitHub.
-2. Import it in Vercel.
-3. Add all environment variables from above (set `BETTER_AUTH_URL` to your live domain).
-4. Update the Google and GitHub OAuth callback URLs with the live domain.
-5. Deploy.
-
-## 📁 Project Structure
-
-```text
-├── app/
-│   ├── page.tsx                      # Home page
-│   ├── loading.tsx                   # Home skeleton
-│   ├── not-found.tsx                 # Custom 404 page
-│   ├── signin/                       # Sign in page
-│   ├── signup/                       # Sign up page
-│   ├── profile/                      # Profile and update pages
-│   ├── productsDetails/[productId]/  # Category page
-│   └── itemDetails/[itemId]/         # Product details (protected)
-├── components/                       # Header, Navbar, Marquee, cards, sections
-├── lib/                              # Better Auth client and config
-├── Type/                             # TypeScript interfaces
-└── utills/                           # Bengali number and unit helpers
+```bash
+npm run start
 ```
 
-## 📸 Screenshots
+## 🔐 Authentication
 
-Add screenshots of the home page, category page, product details and mobile view here.
+BazarDor uses Better Auth for user authentication.
 
-```md
-![Home](./screenshots/home.png)
-```
+Supported authentication features:
 
-## 🔌 Data Source
+- Email and password registration.
+- Email and password login.
+- Google social login.
+- GitHub social login.
+- User profile information update.
+- Logout and authentication feedback.
 
-Prices and categories are fetched from the BazarDor open API:
+Social login requires valid provider credentials and correctly configured callback URLs.
 
-- Products: `https://openapi.programming-hero.com/api/bazardor/products`
-- Categories: `https://openapi.programming-hero.com/api/bazardor/categories`
+## 📱 Responsive Design
 
-## ⚠️ Disclaimer
+The application is designed to work across:
 
-সকল দাম সম্ভাব্য; বাজার অবস্থার ওপর নির্ভর করে পরিবর্তিত হয়।
-(All prices are approximate and may change depending on market conditions.)
+- 📱 Mobile phones
+- 📲 Tablets
+- 💻 Desktop and laptop screens
 
-## 📄 License
+The layout adapts to screen size, including the navigation, hero section, product cards and footer.
 
-This project was built for learning purposes.
+## 📌 Important Notes
+
+- Product prices are indicative and may change according to market conditions.
+- Product information depends on the configured API and its available data.
+- Authentication and protected pages require a correctly configured Better Auth setup.
+- Deployment environment variables must be configured before production use.
+
+## 👨‍💻 Author
+
+**Project:** বাজার দর (BazarDor)
+
+**Purpose:** Academic project demonstrating responsive web development, API integration, authentication, routing and product-price presentation.
+
+---
+
+⭐ If you find this project useful, feel free to explore the repository and share your feedback.
+
+**বাজার দর — প্রয়োজনীয় পণ্যের দাম এক নজরে।**
